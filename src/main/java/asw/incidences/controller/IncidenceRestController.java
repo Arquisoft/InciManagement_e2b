@@ -1,4 +1,4 @@
-package asw.incidences;
+package asw.incidences.controller;
 
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,10 +17,11 @@ public class IncidenceRestController {
 
 	@RequestMapping(value = "/incidence/send", method = RequestMethod.POST, headers = { "Accept=application/json",
 			"Accept=application/xml" })
-	public void sendIncidence(@ModelAttribute Incidence incidence) {
+	public String sendIncidence(@ModelAttribute("incidence") Incidence incidence) {
 		String usuario = incidence.getUsuario();
 		String pass = incidence.getPassword();
 		//String kind = incidence.get;
+		System.out.println(usuario);
 		try {
 			HttpResponse<JsonNode> response = Unirest.post("http://localhost:8080/user")
 					  .header("content-type", "application/json")
@@ -28,13 +29,22 @@ public class IncidenceRestController {
 					  .body("{\n\"login\":\""+usuario+"\",\n\"password\":\""+pass+"\",\n\"kind\":\"1\"\n}\n")
 					  .asJson();
 			
-			
-			
+			System.out.println(response.getBody().toString());
+			if(response.getStatus() != 200){
+				return response.getBody().toString();
+			}else{
+				
+			}
+			return "{\"error\": \"Could not find response\"}";
 		} catch (UnirestException e) {
 			e.printStackTrace();
 		}
 		
-
+		return "{\"error\": \"Could not connect\"}";
 	}
 
+	@ModelAttribute("incidence")
+	public Incidence getIncidence(){
+	    return new Incidence();
+	}
 }

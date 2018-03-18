@@ -5,11 +5,12 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 @Entity
 public class Incidence {
 	
-	Incidence() {}
+	public Incidence() {}
 	
 	@Id
 	@GeneratedValue
@@ -26,7 +27,15 @@ public class Incidence {
 	
 	private String extra;
 	
+	@Transient
 	private List<String> campos;
+
+	
+	
+	public Incidence(String usuario) {
+		super();
+		this.usuario = usuario;
+	}
 
 	public String getUsuario() {
 		return usuario;
