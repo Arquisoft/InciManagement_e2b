@@ -32,8 +32,8 @@ public class IncidenceRestController {
 			System.out.println(response.getBody().toString());
 			if(response.getStatus() != 200){
 				return response.getBody().toString();
-			}else{
-				
+			}else if(response.getStatus() == 200){
+				return response.getBody().toString();
 			}
 			return "{\"error\": \"Could not find response\"}";
 		} catch (UnirestException e) {
