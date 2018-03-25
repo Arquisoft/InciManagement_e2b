@@ -34,7 +34,9 @@ public class IncidenceService {
 		json.put("nombre", incidence.getNombre());
 		json.put("descripcion", incidence.getDescripcion());
 		json.put("localizacion", incidence.getLocalizacion());
-		json.put("etiquetas", incidence.getEtiquetas());
+		if(incidence.getEtiquetas() != null && incidence.getEtiquetas().length() > 0){
+			json.put("etiquetas", incidence.getEtiquetas().split(","));
+		}
 		json.put("extra", incidence.getExtra());
 		kafkaProducer.send("incidencia", json.toString());
 	}
