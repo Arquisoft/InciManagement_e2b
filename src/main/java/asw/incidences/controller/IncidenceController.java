@@ -1,6 +1,5 @@
 package asw.incidences.controller;
 
-import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,7 +38,7 @@ public class IncidenceController {
 				m.addAttribute("succsed", false);
 				m.addAttribute("error", res.getBody().toString());
 			}
-		} catch (UnirestException | JSONException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
+		} catch (UnirestException  e) {
 			e.printStackTrace();
 			m.addAttribute("succsed", false);
 		}

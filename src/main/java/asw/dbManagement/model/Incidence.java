@@ -104,6 +104,13 @@ public class Incidence {
 	public Long getId() {
 		return id;
 	}
+
+	@Override
+	public String toString() {
+		return "Incidence [id=" + id + ", usuario=" + usuario + ", password=" + password + ", nombre=" + nombre
+				+ ", descripcion=" + descripcion + ", localizacion=" + localizacion + ", etiquetas=" + etiquetas
+				+ ", extra=" + extra + "]";
+	}
 	
 
 }

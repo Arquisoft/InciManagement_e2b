@@ -1,8 +1,10 @@
 package asw.incidences.controller;
 
-import org.json.JSONException;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,23 +24,23 @@ public class IncidenceRestController {
 
 	@RequestMapping(value = "/incidence/send", method = RequestMethod.POST, headers = { "Accept=application/json",
 			"Accept=application/xml" })
-	public String sendIncidence(@ModelAttribute("incidence") Incidence incidence) {
-		String usuario = incidence.getUsuario();
-		String pass = incidence.getPassword();
+	public String sendIncidence(@RequestBody Map<String, Object> payload) {
+		String usuario = (String) payload.get("usuario");
+		String pass = (String) payload.get("password");
+		System.out.println(payload);
 		//String kind = incidence.get;
-		System.out.println(usuario);
+
 		try {
 			HttpResponse<JsonNode> response = incService.checkUser(usuario, pass, "1");
 			
-			System.out.println(response.getBody().toString());
 			if(response.getStatus() != 200){
 				return response.getBody().toString();
 			}else if(response.getStatus() == 200){
-				incService.sendKaffka(incidence);
+				incService.sendKaffka(payload);
 				return response.getBody().toString();
 			}
 			return "{\"error\": \"Could not find response\"}";
-		} catch (UnirestException | JSONException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
+		} catch (UnirestException e) {
 			e.printStackTrace();
 		}
 		
