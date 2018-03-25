@@ -1,12 +1,24 @@
 package asw.incidences.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.exceptions.UnirestException;
+
+import asw.dbManagement.model.Incidence;
+import asw.incidences.service.IncidenceService;
+
 @Controller
 public class IncidenceController {
+	
+	@Autowired
+	public IncidenceService incService;
 
 	@RequestMapping("/")
 	public String send(){
@@ -14,8 +26,20 @@ public class IncidenceController {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST,value="/input")
-	public String sended(Model m){
-		
+	public String sended(Model m, @ModelAttribute("incidence") Incidence incidence){
+		try {
+			HttpResponse<JsonNode> res = incService.checkUser(incidence.getUsuario(), incidence.getPassword(), String.valueOf(1));
+			if(res.getStatus() == 200 && !res.getBody().getObject().has("error")){
+				m.addAttribute("succsed", true);
+			}else{
+				System.out.println(res.getBody().toString());
+				m.addAttribute("succsed", false);
+				m.addAttribute("error", res.getBody().toString());
+			}
+		} catch (UnirestException e) {
+			e.printStackTrace();
+			m.addAttribute("succsed", false);
+		}
 		return "input";
 	}
 	

@@ -32,6 +32,15 @@
 <button type="submit" class="btn btn-primary" name="button-1521897076876" style="primary" id="button-1521897076876">Enviar</button>
 </div>
 </form>
+<br>
+<div th:switch="${succsed}">
+<div th:case="true" class="alert alert-success">
+  <strong>Enviado</strong> La incidencia se ha enviado con exito
+</div>
+<div th:case="false" class="alert alert-danger">
+  <strong>Error</strong><i th:text="${error}"></i>
+</div>
+</div>
 </div>
 </body>
 </html>
