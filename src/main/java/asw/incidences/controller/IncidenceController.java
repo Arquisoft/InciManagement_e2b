@@ -1,5 +1,6 @@
 package asw.incidences.controller;
 
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +20,7 @@ public class IncidenceController {
 	
 	@Autowired
 	public IncidenceService incService;
+	
 
 	@RequestMapping("/")
 	public String send(){
@@ -29,14 +31,15 @@ public class IncidenceController {
 	public String sended(Model m, @ModelAttribute("incidence") Incidence incidence){
 		try {
 			HttpResponse<JsonNode> res = incService.checkUser(incidence.getUsuario(), incidence.getPassword(), String.valueOf(1));
-			if(res.getStatus() == 200 && !res.getBody().getObject().has("error")){
+			if(res.getStatus() == 200){
 				m.addAttribute("succsed", true);
+				incService.sendKaffka(incidence);
+				
 			}else{
-				System.out.println(res.getBody().toString());
 				m.addAttribute("succsed", false);
 				m.addAttribute("error", res.getBody().toString());
 			}
-		} catch (UnirestException e) {
+		} catch (UnirestException | JSONException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
 			e.printStackTrace();
 			m.addAttribute("succsed", false);
 		}

@@ -1,5 +1,6 @@
 package asw.incidences.controller;
 
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,10 +34,11 @@ public class IncidenceRestController {
 			if(response.getStatus() != 200){
 				return response.getBody().toString();
 			}else if(response.getStatus() == 200){
+				incService.sendKaffka(incidence);
 				return response.getBody().toString();
 			}
 			return "{\"error\": \"Could not find response\"}";
-		} catch (UnirestException e) {
+		} catch (UnirestException | JSONException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
 			e.printStackTrace();
 		}
 		
