@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/Arquisoft/InciManager_e2b.svg?branch=master)](https://travis-ci.org/Arquisoft/InciManager_e2b)
 # InciManagement_e2b
 Incimanagement e2b
 
