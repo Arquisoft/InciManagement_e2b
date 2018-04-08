@@ -20,7 +20,7 @@ before_install:
 - ls
 - cd Agents_e2b
 - mvn package
-- java -jar .\target\Agents_e2b-0.0.1.jar
+- java -jar ./target/Agents_e2b-0.0.1.jar
 - cd ..
 - mkdir -p kafka && tar xzf kafka.tgz -C kafka --strip-components 1
 - nohup bash -c "cd kafka && bin/zookeeper-server-start.sh config/zookeeper.properties &"
